@@ -63,7 +63,6 @@ This story was published by the poet Nekrassov in his review and was received wi
 		key = win.getkey()
 		if key == '':
 			ReadyForExit()
-			print(characters_typed)
 			exit(1)
 		elif key == '':
 			if currentPos==0:
