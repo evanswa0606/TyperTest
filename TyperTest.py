@@ -87,7 +87,6 @@ This story was published by the poet Nekrassov in his review and was received wi
 			exit(0)
 
 	ReadyForExit()
-	print(characters_typed)
 	exit(0)
 
 
