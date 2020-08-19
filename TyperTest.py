@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import curses
 
 def ReadyForExit():
@@ -14,7 +15,8 @@ def redrawString():
 	win.erase()
 	for i in range(0, len(characters_typed)):
 		win.addch(characters_typed[i][0], curses.color_pair(map_colors.get(characters_typed[i][1])))
-	for i in range(len(characters_typed), len(string_to_type)):
+	win.addch(string_to_type[len(characters_typed)], curses.A_UNDERLINE)
+	for i in range(len(characters_typed)+1, len(string_to_type)):
 		win.addch(string_to_type[i], curses.color_pair(3))
 
 
@@ -24,6 +26,7 @@ def main():
 	global win
 	global currentPos
 	global string_to_type
+	global accuracy_win
 	characters_typed=[] 
 	currentPos=0
 	keysTyped=""
@@ -49,10 +52,7 @@ def main():
 	window_starty=int((curses.COLS/2)-(window_width/2))
 	win=curses.newwin(window_height, window_width, window_startx, window_starty)
 	stdscr.border(0)
-	string_to_type="""A few words about Dostoevsky himself may help the English reader to understand his work.
-Dostoevsky was the son of a doctor. His parents were very hard-working and deeply religious people, but so poor that they lived with their five children in only two rooms. The father and mother spent their evenings in reading aloud to their children, generally from books of a serious character.
-Though always sickly and delicate Dostoevsky came out third in the final examination of the Petersburg school of Engineering. There he had already begun his first work, “Poor Folk.”
-This story was published by the poet Nekrassov in his review and was received with acclamations. The shy, unknown youth found himself instantly something of a celebrity. A brilliant and successful career seemed to open before him, but those hopes were soon dashed. In 1849 he was arrested. """
+	string_to_type="""A few words about Dostoevsky himself may help the English reader to understand his work.Dostoevsky was the son of a doctor. His parents were very hard-working and deeply religious people, but so poor that they lived with their five children in only two rooms. The father and mother spent their evenings in reading aloud to their children, generally from books of a serious character. Though always sickly and delicate Dostoevsky came out third in the final examination of the Petersburg school of Engineering. There he had already begun his first work, "Poor Folk." This story was published by the poet Nekrassov in his review and was received with acclamations. The shy, unknown youth found himself instantly something of a celebrity. A brilliant and successful career seemed to open before him, but those hopes were soon dashed. In 1849 he was arrested."""
 
 	curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
 	curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -74,16 +74,19 @@ This story was published by the poet Nekrassov in his review and was received wi
 
 		elif key == string_to_type[currentPos]:
 			characters_typed.append((key, "green"))
+			if currentPos==len(string_to_type)-1:
+				ReadyForExit()
+				exit(0)
 			redrawString()
 			currentPos+=1
 		else:
 			characters_typed.append((key, "red"))
+			if currentPos==len(string_to_type)-1:
+				ReadyForExit()
+				exit(0)
 			redrawString()
 			currentPos+=1
 
-		if currentPos == len(string_to_type):
-			ReadyForExit()
-			exit(0)
 
 	ReadyForExit()
 	exit(0)
