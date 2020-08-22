@@ -1,4 +1,8 @@
 import curses
+
+#def newwin(width, height, startx, starty, border):
+	
+
 def ReadyForExit():
 	curses.echo()
 	stdscr.keypad(False)
@@ -37,21 +41,26 @@ def main():
 	stdscr.keypad(True)
 	curses.cbreak()
 	curses.curs_set(0)
-	curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
-	curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+
+	curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+	curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_GREEN)
 	curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
 	window_height=30
 	window_width=130
 
-	# Window starts in upper left hand corner.
-
 	window_startx=int((curses.LINES / 2)-(window_height/2))
 	window_starty=int((curses.COLS/2)-(window_width/2))
+
 	win=curses.newwin(window_height, window_width, window_startx, window_starty)
+	win.border(1)
 
-	win.border(0)
-
+	topwin=curses.newwin(3, curses.COLS-1, 0,0)
+	topwin.border(0)
+	# Starts from left, same as window positioning, "TyperTest" has length 9
+	topwin.addstr(1,int((curses.COLS/2)-(9/2)),'TyperTest')
+	topwin.refresh()
+	
 	outer_window_height=32
 	outer_window_width=132
 
@@ -60,13 +69,12 @@ def main():
 
 	outer_window=curses.newwin(outer_window_height,outer_window_width,outer_window_startx,outer_window_starty)
 	outer_window.border(0)
-	outer_window.addch('h')
+	outer_window.refresh()
 
 	accuracy_win_startx=window_startx+window_width+5
 	accuracy_win_starty=window_starty+window_height+5
 	# The word accuracy is 8 chars long, plus a space, plus 3 digits max
 	
-	stdscr.border(0)
 	string_to_type="It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him."
 	redrawString()
 	
